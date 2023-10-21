@@ -1,0 +1,267 @@
+
+Lab4.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000014c  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  000001a0  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  000001a0  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000001d0  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000020  00000000  00000000  0000020c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000798  00000000  00000000  0000022c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000536  00000000  00000000  000009c4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000388  00000000  00000000  00000efa  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000024  00000000  00000000  00001284  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000002f3  00000000  00000000  000012a8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000288  00000000  00000000  0000159b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000010  00000000  00000000  00001823  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	19 c0       	rjmp	.+50     	; 0x36 <__bad_interrupt>
+   4:	18 c0       	rjmp	.+48     	; 0x36 <__bad_interrupt>
+   6:	17 c0       	rjmp	.+46     	; 0x36 <__bad_interrupt>
+   8:	16 c0       	rjmp	.+44     	; 0x36 <__bad_interrupt>
+   a:	15 c0       	rjmp	.+42     	; 0x36 <__bad_interrupt>
+   c:	14 c0       	rjmp	.+40     	; 0x36 <__bad_interrupt>
+   e:	13 c0       	rjmp	.+38     	; 0x36 <__bad_interrupt>
+  10:	12 c0       	rjmp	.+36     	; 0x36 <__bad_interrupt>
+  12:	11 c0       	rjmp	.+34     	; 0x36 <__bad_interrupt>
+  14:	10 c0       	rjmp	.+32     	; 0x36 <__bad_interrupt>
+  16:	0f c0       	rjmp	.+30     	; 0x36 <__bad_interrupt>
+  18:	0e c0       	rjmp	.+28     	; 0x36 <__bad_interrupt>
+  1a:	0d c0       	rjmp	.+26     	; 0x36 <__bad_interrupt>
+  1c:	0c c0       	rjmp	.+24     	; 0x36 <__bad_interrupt>
+  1e:	0b c0       	rjmp	.+22     	; 0x36 <__bad_interrupt>
+  20:	0a c0       	rjmp	.+20     	; 0x36 <__bad_interrupt>
+  22:	09 c0       	rjmp	.+18     	; 0x36 <__bad_interrupt>
+  24:	08 c0       	rjmp	.+16     	; 0x36 <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+  32:	02 d0       	rcall	.+4      	; 0x38 <main>
+  34:	89 c0       	rjmp	.+274    	; 0x148 <_exit>
+
+00000036 <__bad_interrupt>:
+  36:	e4 cf       	rjmp	.-56     	; 0x0 <__vectors>
+
+00000038 <main>:
+#include <avr/io.h>
+#include <util/delay.h>
+#define ZAD 500
+int main(void)
+{
+    DDRD = 0b11111111;
+  38:	8f ef       	ldi	r24, 0xFF	; 255
+  3a:	81 bb       	out	0x11, r24	; 17
+	PORTD = 0b11111111;
+  3c:	82 bb       	out	0x12, r24	; 18
+	DDRB = 0b11111111;
+  3e:	87 bb       	out	0x17, r24	; 23
+	PORTB = 0b00000000;
+  40:	18 ba       	out	0x18, r1	; 24
+
+    while (1) 
+    {
+
+		
+			PORTD = 0x3F;   //***0*** HEX:3F BIN:0b00111111
+  42:	8f e3       	ldi	r24, 0x3F	; 63
+  44:	82 bb       	out	0x12, r24	; 18
+		PORTB = ~0x3F;
+  46:	80 ec       	ldi	r24, 0xC0	; 192
+  48:	88 bb       	out	0x18, r24	; 24
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  4a:	2f e9       	ldi	r18, 0x9F	; 159
+  4c:	86 e8       	ldi	r24, 0x86	; 134
+  4e:	91 e0       	ldi	r25, 0x01	; 1
+  50:	21 50       	subi	r18, 0x01	; 1
+  52:	80 40       	sbci	r24, 0x00	; 0
+  54:	90 40       	sbci	r25, 0x00	; 0
+  56:	e1 f7       	brne	.-8      	; 0x50 <__SREG__+0x11>
+  58:	00 c0       	rjmp	.+0      	; 0x5a <__SREG__+0x1b>
+  5a:	00 00       	nop
+		_delay_ms(ZAD);
+
+		PORTD = 0x6 ;   //***1*** HEX:6  BIN:0b00000110
+  5c:	86 e0       	ldi	r24, 0x06	; 6
+  5e:	82 bb       	out	0x12, r24	; 18
+		PORTB = ~0x6 ;
+  60:	89 ef       	ldi	r24, 0xF9	; 249
+  62:	88 bb       	out	0x18, r24	; 24
+  64:	2f e9       	ldi	r18, 0x9F	; 159
+  66:	86 e8       	ldi	r24, 0x86	; 134
+  68:	91 e0       	ldi	r25, 0x01	; 1
+  6a:	21 50       	subi	r18, 0x01	; 1
+  6c:	80 40       	sbci	r24, 0x00	; 0
+  6e:	90 40       	sbci	r25, 0x00	; 0
+  70:	e1 f7       	brne	.-8      	; 0x6a <__SREG__+0x2b>
+  72:	00 c0       	rjmp	.+0      	; 0x74 <__SREG__+0x35>
+  74:	00 00       	nop
+		_delay_ms(ZAD);
+
+		PORTD = 0x5B;   //***2*** HEX:5B BIN:0b01011011
+  76:	8b e5       	ldi	r24, 0x5B	; 91
+  78:	82 bb       	out	0x12, r24	; 18
+		PORTB = ~0x5B;
+  7a:	84 ea       	ldi	r24, 0xA4	; 164
+  7c:	88 bb       	out	0x18, r24	; 24
+  7e:	2f e9       	ldi	r18, 0x9F	; 159
+  80:	86 e8       	ldi	r24, 0x86	; 134
+  82:	91 e0       	ldi	r25, 0x01	; 1
+  84:	21 50       	subi	r18, 0x01	; 1
+  86:	80 40       	sbci	r24, 0x00	; 0
+  88:	90 40       	sbci	r25, 0x00	; 0
+  8a:	e1 f7       	brne	.-8      	; 0x84 <__SREG__+0x45>
+  8c:	00 c0       	rjmp	.+0      	; 0x8e <__SREG__+0x4f>
+  8e:	00 00       	nop
+		_delay_ms(ZAD);
+
+		PORTD = 0x4F;   //***3*** HEX:4F BIN:0b01001111
+  90:	8f e4       	ldi	r24, 0x4F	; 79
+  92:	82 bb       	out	0x12, r24	; 18
+		PORTB = ~0x4F;
+  94:	80 eb       	ldi	r24, 0xB0	; 176
+  96:	88 bb       	out	0x18, r24	; 24
+  98:	2f e9       	ldi	r18, 0x9F	; 159
+  9a:	86 e8       	ldi	r24, 0x86	; 134
+  9c:	91 e0       	ldi	r25, 0x01	; 1
+  9e:	21 50       	subi	r18, 0x01	; 1
+  a0:	80 40       	sbci	r24, 0x00	; 0
+  a2:	90 40       	sbci	r25, 0x00	; 0
+  a4:	e1 f7       	brne	.-8      	; 0x9e <__SREG__+0x5f>
+  a6:	00 c0       	rjmp	.+0      	; 0xa8 <__SREG__+0x69>
+  a8:	00 00       	nop
+		_delay_ms(ZAD);
+
+		PORTD = 0x66;   //***4*** HEX:66 BIN:0b01100110
+  aa:	86 e6       	ldi	r24, 0x66	; 102
+  ac:	82 bb       	out	0x12, r24	; 18
+		PORTB = ~0x66;
+  ae:	89 e9       	ldi	r24, 0x99	; 153
+  b0:	88 bb       	out	0x18, r24	; 24
+  b2:	2f e9       	ldi	r18, 0x9F	; 159
+  b4:	86 e8       	ldi	r24, 0x86	; 134
+  b6:	91 e0       	ldi	r25, 0x01	; 1
+  b8:	21 50       	subi	r18, 0x01	; 1
+  ba:	80 40       	sbci	r24, 0x00	; 0
+  bc:	90 40       	sbci	r25, 0x00	; 0
+  be:	e1 f7       	brne	.-8      	; 0xb8 <__SREG__+0x79>
+  c0:	00 c0       	rjmp	.+0      	; 0xc2 <__SREG__+0x83>
+  c2:	00 00       	nop
+		_delay_ms(ZAD);
+
+		PORTD = 0x6D;   //***5*** HEX:6D BIN:0b01101101
+  c4:	8d e6       	ldi	r24, 0x6D	; 109
+  c6:	82 bb       	out	0x12, r24	; 18
+		PORTB = ~0x6D;
+  c8:	82 e9       	ldi	r24, 0x92	; 146
+  ca:	88 bb       	out	0x18, r24	; 24
+  cc:	2f e9       	ldi	r18, 0x9F	; 159
+  ce:	86 e8       	ldi	r24, 0x86	; 134
+  d0:	91 e0       	ldi	r25, 0x01	; 1
+  d2:	21 50       	subi	r18, 0x01	; 1
+  d4:	80 40       	sbci	r24, 0x00	; 0
+  d6:	90 40       	sbci	r25, 0x00	; 0
+  d8:	e1 f7       	brne	.-8      	; 0xd2 <__SREG__+0x93>
+  da:	00 c0       	rjmp	.+0      	; 0xdc <__SREG__+0x9d>
+  dc:	00 00       	nop
+		_delay_ms(ZAD);
+
+		PORTD = 0x7D;   //***6*** HEX:7D BIN:0b01111101
+  de:	8d e7       	ldi	r24, 0x7D	; 125
+  e0:	82 bb       	out	0x12, r24	; 18
+		PORTB = ~0x7D;
+  e2:	82 e8       	ldi	r24, 0x82	; 130
+  e4:	88 bb       	out	0x18, r24	; 24
+  e6:	2f e9       	ldi	r18, 0x9F	; 159
+  e8:	86 e8       	ldi	r24, 0x86	; 134
+  ea:	91 e0       	ldi	r25, 0x01	; 1
+  ec:	21 50       	subi	r18, 0x01	; 1
+  ee:	80 40       	sbci	r24, 0x00	; 0
+  f0:	90 40       	sbci	r25, 0x00	; 0
+  f2:	e1 f7       	brne	.-8      	; 0xec <__SREG__+0xad>
+  f4:	00 c0       	rjmp	.+0      	; 0xf6 <__SREG__+0xb7>
+  f6:	00 00       	nop
+		_delay_ms(ZAD);
+
+		PORTD = 0x7 ;   //***7*** HEX:7  BIN:0b00000111
+  f8:	87 e0       	ldi	r24, 0x07	; 7
+  fa:	82 bb       	out	0x12, r24	; 18
+		PORTB = ~0x7 ;
+  fc:	88 ef       	ldi	r24, 0xF8	; 248
+  fe:	88 bb       	out	0x18, r24	; 24
+ 100:	2f e9       	ldi	r18, 0x9F	; 159
+ 102:	86 e8       	ldi	r24, 0x86	; 134
+ 104:	91 e0       	ldi	r25, 0x01	; 1
+ 106:	21 50       	subi	r18, 0x01	; 1
+ 108:	80 40       	sbci	r24, 0x00	; 0
+ 10a:	90 40       	sbci	r25, 0x00	; 0
+ 10c:	e1 f7       	brne	.-8      	; 0x106 <__SREG__+0xc7>
+ 10e:	00 c0       	rjmp	.+0      	; 0x110 <__SREG__+0xd1>
+ 110:	00 00       	nop
+		_delay_ms(ZAD);
+
+		PORTD = 0x7F;   //***8*** HEX:7F BIN:0b01111111
+ 112:	8f e7       	ldi	r24, 0x7F	; 127
+ 114:	82 bb       	out	0x12, r24	; 18
+		PORTB = ~0x7F;
+ 116:	80 e8       	ldi	r24, 0x80	; 128
+ 118:	88 bb       	out	0x18, r24	; 24
+ 11a:	2f e9       	ldi	r18, 0x9F	; 159
+ 11c:	86 e8       	ldi	r24, 0x86	; 134
+ 11e:	91 e0       	ldi	r25, 0x01	; 1
+ 120:	21 50       	subi	r18, 0x01	; 1
+ 122:	80 40       	sbci	r24, 0x00	; 0
+ 124:	90 40       	sbci	r25, 0x00	; 0
+ 126:	e1 f7       	brne	.-8      	; 0x120 <__SREG__+0xe1>
+ 128:	00 c0       	rjmp	.+0      	; 0x12a <__SREG__+0xeb>
+ 12a:	00 00       	nop
+		_delay_ms(ZAD);
+
+		PORTD = 0x6F;   //***9*** HEX:6F BIN:0b01101111
+ 12c:	8f e6       	ldi	r24, 0x6F	; 111
+ 12e:	82 bb       	out	0x12, r24	; 18
+		PORTB = ~0x6F;
+ 130:	80 e9       	ldi	r24, 0x90	; 144
+ 132:	88 bb       	out	0x18, r24	; 24
+ 134:	2f e9       	ldi	r18, 0x9F	; 159
+ 136:	86 e8       	ldi	r24, 0x86	; 134
+ 138:	91 e0       	ldi	r25, 0x01	; 1
+ 13a:	21 50       	subi	r18, 0x01	; 1
+ 13c:	80 40       	sbci	r24, 0x00	; 0
+ 13e:	90 40       	sbci	r25, 0x00	; 0
+ 140:	e1 f7       	brne	.-8      	; 0x13a <__SREG__+0xfb>
+ 142:	00 c0       	rjmp	.+0      	; 0x144 <__SREG__+0x105>
+ 144:	00 00       	nop
+ 146:	7d cf       	rjmp	.-262    	; 0x42 <__SREG__+0x3>
+
+00000148 <_exit>:
+ 148:	f8 94       	cli
+
+0000014a <__stop_program>:
+ 14a:	ff cf       	rjmp	.-2      	; 0x14a <__stop_program>
